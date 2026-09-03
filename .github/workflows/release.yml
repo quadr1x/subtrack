@@ -16,8 +16,8 @@ jobs:
         include:
           - target: {os: ubuntu-latest, arch: x64,  artifact: linux,   name: subtrack-linux-x64,        build: 'flutter build linux --release',           out_dir: 'build/linux/x64/release/bundle', archive_format: tar }
           - target: {os: windows-latest, arch: x64, artifact: windows, name: subtrack-windows-x64,      build: 'flutter build windows --release',         out_dir: 'build/windows/x64/runner/Release', archive_format: zip }
-          - target: {os: macos-latest,   arch: arm64,artifact: macos,  name: subtrack-macos-arm64,      build: 'flutter build macos --release',           out_dir: 'build/macos/Build/Products/Release/SubTrack.app', archive_format: tar }
-          - target: {os: macos-latest,   arch: x64,  artifact: macos,  name: subtrack-macos-x64,        build: 'flutter build macos --release',           out_dir: 'build/macos/Build/Products/Release/SubTrack.app', archive_format: tar }
+          - target: {os: macos-latest,   arch: arm64,artifact: macos,  name: subtrack-macos-arm64,      build: 'flutter build macos --release',           out_dir: 'build/macos/Build/Products/Release/',      archive_format: tar }
+          - target: {os: macos-latest,   arch: x64,  artifact: macos,  name: subtrack-macos-x64,        build: 'flutter build macos --release',           out_dir: 'build/macos/Build/Products/Release/',      archive_format: tar }
 
     steps:
       - name: Checkout
