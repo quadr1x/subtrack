@@ -1,0 +1,92 @@
+name: Build and Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build ${{ matrix.target.os }} (${{ matrix.target.arch }})
+    runs-on: ${{ matrix.target.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - target: {os: ubuntu-latest, arch: x64,  artifact: linux,   name: subtrack-linux-x64,        build: 'flutter build linux --release',           out_dir: 'build/linux/x64/release/bundle', archive_format: tar }
+          - target: {os: windows-latest, arch: x64, artifact: windows, name: subtrack-windows-x64,      build: 'flutter build windows --release',         out_dir: 'build/windows/x64/runner/Release', archive_format: zip }
+          - target: {os: macos-latest,   arch: arm64,artifact: macos,  name: subtrack-macos-arm64,      build: 'flutter build macos --release',           out_dir: 'build/macos/Build/Products/Release/SubTrack.app', archive_format: tar }
+          - target: {os: macos-latest,   arch: x64,  artifact: macos,  name: subtrack-macos-x64,        build: 'flutter build macos --release',           out_dir: 'build/macos/Build/Products/Release/SubTrack.app', archive_format: tar }
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.24.0'
+          channel: stable
+
+      - name: Cache pub dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.pub-cache
+            .dart_tool
+          key: ${{ runner.os }}-pub-${{ hashFiles('**/pubspec.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-pub-
+
+      - name: Install Linux deps
+        if: matrix.target.os == 'ubuntu-latest'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libgtk-3-dev liblzma-dev libstdc++6 clang cmake ninja-build pkg-config
+
+      - name: Pub get
+        run: flutter pub get
+
+      - name: Build
+        run: ${{ matrix.target.build }}
+
+      - name: Package ${{ matrix.target.name }}
+        shell: bash
+        run: |
+          mkdir -p release
+          cd '${{ matrix.target.out_dir }}'
+          if [ "${{ matrix.target.archive_format }}" = "tar" ]; then
+            tar -czf ../../../../release/${{ matrix.target.name }}.tar.gz .
+          else
+            zip -r   ../../../../release/${{ matrix.target.name }}.zip  .
+          fi
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.target.name }}
+          path: release/${{ matrix.target.name }}.*
+
+  release:
+    name: Create GitHub Release
+    needs: build
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/v')
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
+      - name: Display structure
+        run: ls -la artifacts
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: artifacts/**/*
+          generate_release_notes: true
+          draft: false
+          prerelease: false
