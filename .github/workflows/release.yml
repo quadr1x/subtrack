@@ -14,10 +14,8 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - target: {os: ubuntu-latest, arch: x64,  artifact: linux,   name: subtrack-linux-x64,   build: 'flutter build linux --release',   out_dir: 'build/linux/x64/release/bundle',         archive_format: tar }
           - target: {os: windows-latest, arch: x64, artifact: windows, name: subtrack-windows-x64, build: 'flutter build windows --release', out_dir: 'build/windows/x64/runner/Release',       archive_format: zip }
-          - target: {os: macos-latest,   arch: arm64,artifact: macos,  name: subtrack-macos-arm64, build: 'flutter build macos --release',   out_dir: 'build/macos/Build/Products/Release',     archive_format: tar }
-          - target: {os: macos-latest,   arch: x64,  artifact: macos,  name: subtrack-macos-x64,   build: 'flutter build macos --release',   out_dir: 'build/macos/Build/Products/Release',     archive_format: tar }
+          - target: {os: ubuntu-latest, arch: x64,  artifact: web,     name: subtrack-web,         build: 'flutter build web --release',     out_dir: 'build/web',                                archive_format: zip }
 
     steps:
       - name: Checkout
@@ -38,12 +36,6 @@ jobs:
           key: ${{ runner.os }}-pub-${{ hashFiles('**/pubspec.lock') }}
           restore-keys: |
             ${{ runner.os }}-pub-
-
-      - name: Install Linux deps
-        if: matrix.target.os == 'ubuntu-latest'
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y libgtk-3-dev liblzma-dev libstdc++6 clang cmake ninja-build pkg-config
 
       - name: Pub get
         run: flutter pub get
