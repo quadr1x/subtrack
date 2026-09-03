@@ -54,13 +54,38 @@ jobs:
       - name: Package ${{ matrix.target.name }}
         shell: bash
         run: |
-          mkdir -p release
-          cd '${{ matrix.target.out_dir }}'
-          if [ "${{ matrix.target.archive_format }}" = "tar" ]; then
-            tar -czf ../../../../release/${{ matrix.target.name }}.tar.gz .
+          set -e
+          STAGE="release/${{ matrix.target.name }}"
+          rm -rf release
+          mkdir -p "$STAGE"
+
+          # Copy the build output into a clean staging directory.
+          # The trailing slashes are important: they let cp -R / xcopy
+          # copy the *contents* of out_dir into STAGE rather than nesting.
+          if [ "${{ runner.os }}" = "Windows_NT" ]; then
+            # xcopy returns 0 on success, 1 on "file not found" — we explicitly
+            # check that STAGE actually got populated.
+            xcopy /E /I /Y "${{ matrix.target.out_dir }}\\*" "$STAGE\" >NUL
           else
-            zip -r   ../../../../release/${{ matrix.target.name }}.zip  .
+            cp -R "${{ matrix.target.out_dir }}/." "$STAGE/"
           fi
+
+          if [ ! -d "$STAGE" ] || [ -z "$(ls -A "$STAGE")" ]; then
+            echo "::error::No files were copied into $STAGE"
+            exit 1
+          fi
+
+          cd release
+          if [ "${{ matrix.target.archive_format }}" = "tar" ]; then
+            # -h follows symlinks so macOS .app bundles (which contain
+            # symlinks in Frameworks/) archive correctly.
+            tar -czhf "${{ matrix.target.name }}.tar.gz" "${{ matrix.target.name }}"
+          else
+            # Use zip -r on Windows. Quote the path to handle spaces.
+            zip -r "${{ matrix.target.name }}.zip" "${{ matrix.target.name }}"
+          fi
+          cd ..
+          ls -la release/
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
