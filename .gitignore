@@ -1,0 +1,62 @@
+# Miscellaneous
+*.class
+*.log
+*.lock
+*.pyc
+*.swp
+*.local.conf
+*.env
+.DS_Store
+.atom/
+.build/
+.buildlog/
+.history
+.svn/
+.swiftpm/
+migrate_working_dir/
+
+# IntelliJ related
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# VS Code
+.vscode/
+
+# Flutter/Dart/Pub related
+**/doc/api/
+**/ios/Flutter/.last_build_id
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+build/
+coverage/
+
+# Platform-specific build outputs
+**/build/windows/
+**/build/linux/
+**/build/macos/
+**/build/web/
+**/build/ios/
+**/build/android/
+
+# Release binaries (keep source only)
+*.exe
+*.dll
+*.so
+*.dylib
+*.msi
+*.msix
+
+# Hive local storage (user data — never commit)
+*.hive
+*.hiv
+
+# Confidential / secrets
+*.key
+credentials.json
+secrets.json

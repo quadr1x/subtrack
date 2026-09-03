@@ -1,0 +1,15 @@
+{
+  "app": {
+    "title": "SubTrack"
+  },
+  "header": "Cost Analytics",
+  "monthly_total": "This Month",
+  "forecast": "Yearly Forecast",
+  "expenses_by_month": "Monthly Expenses",
+  "add_subscription_button": "Add Subscription",
+  "categories": {
+    "Basic": "Basic",
+    "Premium": "Premium",
+    "Enterprise": "Enterprise"
+  }
+}

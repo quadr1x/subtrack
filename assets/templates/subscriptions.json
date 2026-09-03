@@ -1,0 +1,62 @@
+[
+  {
+    "id": "1",
+    "name": "Netflix",
+    "price": 15.99,
+    "currency": "USD",
+    "category": "Entertainment",
+    "description": "Streaming service for movies and TV shows",
+    "logoUrl": "assets/images/netflix.png",
+    "color": "#E50914",
+    "paymentMethod": "Credit Card",
+    "period": "monthly"
+  },
+  {
+    "id": "2",
+    "name": "Spotify",
+    "price": 9.99,
+    "currency": "USD",
+    "category": "Music",
+    "description": "Music streaming service",
+    "logoUrl": "assets/images/spotify.png",
+    "color": "#1DB954",
+    "paymentMethod": "Credit Card",
+    "period": "monthly"
+  },
+  {
+    "id": "3",
+    "name": "Adobe Creative Cloud",
+    "price": 52.99,
+    "currency": "USD",
+    "category": "Productivity",
+    "description": "Creative software suite",
+    "logoUrl": "assets/images/adobe.png",
+    "color": "#FF0000",
+    "paymentMethod": "Credit Card",
+    "period": "monthly"
+  },
+  {
+    "id": "4",
+    "name": "Amazon Prime",
+    "price": 12.99,
+    "currency": "USD",
+    "category": "Shopping",
+    "description": "Prime membership with benefits",
+    "logoUrl": "assets/images/amazon.png",
+    "color": "#FF9900",
+    "paymentMethod": "Credit Card",
+    "period": "monthly"
+  },
+  {
+    "id": "5",
+    "name": "Microsoft Office 365",
+    "price": 69.99,
+    "currency": "USD",
+    "category": "Productivity",
+    "description": "Office productivity suite",
+    "logoUrl": "assets/images/microsoft.png",
+    "color": "#0078D4",
+    "paymentMethod": "Credit Card",
+    "period": "yearly"
+  }
+]

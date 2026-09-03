@@ -1,0 +1,15 @@
+{
+  "app": {
+    "title": "SubTrack"
+  },
+  "header": "Аналитика расходов",
+  "monthly_total": "Месяц",
+  "forecast": "Прогноз на год",
+  "expenses_by_month": "Траты по месяцам",
+  "add_subscription_button": "Добавить подписку",
+  "categories": {
+    "Basic": "Базовая",
+    "Premium": "Премиум",
+    "Enterprise": "Корпоративная"
+  }
+}
